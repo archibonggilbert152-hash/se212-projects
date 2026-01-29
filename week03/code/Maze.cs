@@ -14,56 +14,64 @@
 /// If there is a wall, then throw an InvalidOperationException with the message "Can't go that way!".  If there is no wall,
 /// then the 'currX' and 'currY' values should be changed.
 /// </summary>
+using System;
+using System.Collections.Generic;
+
 public class Maze
 {
-    private readonly Dictionary<ValueTuple<int, int>, bool[]> _mazeMap;
-    private int _currX = 1;
-    private int _currY = 1;
+    private (int x, int y) _current;
+    private Dictionary<(int, int), bool[]> _map;
 
-    public Maze(Dictionary<ValueTuple<int, int>, bool[]> mazeMap)
+    // --------------------------------------------------
+    // REQUIRED CONSTRUCTOR
+    // --------------------------------------------------
+    public Maze((int x, int y) start,
+                Dictionary<(int, int), bool[]> map)
     {
-        _mazeMap = mazeMap;
+        _current = start;
+        _map = map;
     }
 
-    // TODO Problem 4 - ADD YOUR CODE HERE
-    /// <summary>
-    /// Check to see if you can move left.  If you can, then move.  If you
-    /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
-    /// </summary>
-    public void MoveLeft()
-    {
-        // FILL IN CODE
-    }
-
-    /// <summary>
-    /// Check to see if you can move right.  If you can, then move.  If you
-    /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
-    /// </summary>
-    public void MoveRight()
-    {
-        // FILL IN CODE
-    }
-
-    /// <summary>
-    /// Check to see if you can move up.  If you can, then move.  If you
-    /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
-    /// </summary>
-    public void MoveUp()
-    {
-        // FILL IN CODE
-    }
-
-    /// <summary>
-    /// Check to see if you can move down.  If you can, then move.  If you
-    /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
-    /// </summary>
-    public void MoveDown()
-    {
-        // FILL IN CODE
-    }
-
+    // --------------------------------------------------
+    // REQUIRED STATUS FORMAT
+    // --------------------------------------------------
     public string GetStatus()
     {
-        return $"Current location (x={_currX}, y={_currY})";
+        return $"Current location (x={_current.x}, y={_current.y})";
+    }
+
+    // --------------------------------------------------
+    // MOVEMENT METHODS (throw on invalid)
+    // --------------------------------------------------
+    public void MoveLeft()
+    {
+        if (!_map[_current][0])
+            throw new InvalidOperationException("Can't go that way!");
+
+        _current = (_current.x - 1, _current.y);
+    }
+
+    public void MoveRight()
+    {
+        if (!_map[_current][1])
+            throw new InvalidOperationException("Can't go that way!");
+
+        _current = (_current.x + 1, _current.y);
+    }
+
+    public void MoveUp()
+    {
+        if (!_map[_current][2])
+            throw new InvalidOperationException("Can't go that way!");
+
+        _current = (_current.x, _current.y + 1);
+    }
+
+    public void MoveDown()
+    {
+        if (!_map[_current][3])
+            throw new InvalidOperationException("Can't go that way!");
+
+        _current = (_current.x, _current.y - 1);
     }
 }
