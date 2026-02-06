@@ -16,17 +16,28 @@ public static class Recursion
     }
 
     // --------------------------------------------------
-    // PROBLEM 2: Permutations Choose (PUBLIC ENTRY)
+    // PROBLEM 2: Permutations Choose
     // --------------------------------------------------
+
+    // Version returning a list (some tests use this)
     public static List<string> PermutationsChoose(char[] letters, int size)
     {
         List<string> results = new();
-        PermutationsChoose("", letters, size, results);
+        PermutationsChoose(letters, size, results);
         return results;
     }
 
-    // 👇 THIS is the overload the tests expect (3 args)
+    // Version the tests call directly (3 arguments)
     public static void PermutationsChoose(
+        char[] letters,
+        int size,
+        List<string> results)
+    {
+        PermutationsChoose("", letters, size, results);
+    }
+
+    // Recursive helper
+    private static void PermutationsChoose(
         string prefix,
         char[] letters,
         int size,
@@ -49,7 +60,7 @@ public static class Recursion
     }
 
     // --------------------------------------------------
-    // PROBLEM 3: Climbing Stairs (DEFAULT PARAM FIX)
+    // PROBLEM 3: Climbing Stairs (Memoization)
     // --------------------------------------------------
     public static int CountWaysToClimb(
         int s,
@@ -93,7 +104,7 @@ public static class Recursion
     }
 
     // --------------------------------------------------
-    // PROBLEM 5: Solve Maze (TEST EXPECTS THIS HERE)
+    // PROBLEM 5: Maze Solver
     // --------------------------------------------------
     public static void SolveMaze(
         Maze maze,
@@ -114,11 +125,11 @@ public static class Recursion
             return;
         }
 
-        SolveMaze(maze, x + 1, y, currPath, results);
-        SolveMaze(maze, x - 1, y, currPath, results);
-        SolveMaze(maze, x, y + 1, currPath, results);
-        SolveMaze(maze, x, y - 1, currPath, results);
+        SolveMaze(maze, x + 1, y, currPath, results); // Right
+        SolveMaze(maze, x - 1, y, currPath, results); // Left
+        SolveMaze(maze, x, y + 1, currPath, results); // Down
+        SolveMaze(maze, x, y - 1, currPath, results); // Up
 
-        currPath.RemoveAt(currPath.Count - 1);
+        currPath.RemoveAt(currPath.Count - 1); // Backtrack
     }
 }
